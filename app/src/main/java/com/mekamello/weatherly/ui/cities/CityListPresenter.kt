@@ -25,6 +25,7 @@ class CityListPresenterImpl
     override fun onCreate(view: CityListView) {
         listView = view
         listView?.let {
+            preload()
             subscribeOnCityIntent(it.addCityIntent())
             subscribeOnRefreshIntent(it.refreshIntent())
             subscribeOnShowDialogIntent(it.dialogIntent())
@@ -34,6 +35,12 @@ class CityListPresenterImpl
     override fun onDestroy() {
         compositeDisposable.clear()
         listView = null
+    }
+    private fun preload(){
+        compositeDisposable += interactor.getCityList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { listView?.render(it) }
     }
     private fun subscribeOnCityIntent(intent: Observable<String>) {
         compositeDisposable += intent

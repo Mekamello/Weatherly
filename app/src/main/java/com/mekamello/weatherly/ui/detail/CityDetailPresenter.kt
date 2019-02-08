@@ -24,12 +24,23 @@ class CityDetailPresenterImpl
 
     override fun onCreate(view: CityDetailView) {
         detailView = view
+        preload()
         subscribeOnRefreshIntent(view.refreshIntent())
     }
 
     override fun onDestroy() {
         detailView = null
         compositeDisposable.clear()
+    }
+
+    private fun preload() {
+        compositeDisposable += interactor.getDetail(cityId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { detailView?.render(it) },
+                onError = { Log.e("CityDetailPresenter", it.message) }
+            )
     }
 
     private fun subscribeOnRefreshIntent(intent: Observable<Unit>) {

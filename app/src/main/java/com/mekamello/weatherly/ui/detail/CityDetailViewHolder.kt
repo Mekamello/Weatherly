@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.mekamello.weatherly.R
-import com.mekamello.weatherly.domain.models.Daily
 
 class CityDetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val name: TextView = itemView.findViewById(R.id.daily_item_name)
@@ -15,8 +14,8 @@ class CityDetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val icon: ImageView = itemView.findViewById(R.id.daily_item_icon)
 
     fun bind(daily: DailyItem) {
-        min.text= daily.min.toString()
-        max.text= daily.max.toString()
+        min.text = daily.getMinTempString()
+        max.text = daily.getMaxTempString()
         weather.text = daily.weatherDescription
         name.text = daily.dayOfWeek
     }

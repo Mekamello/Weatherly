@@ -35,22 +35,21 @@ class CityDetailInteractorImpl
 
     private fun groupByDay(cityDetail: CityDetail) =
         cityDetail.daily
-            .groupBy { dateUtils.getMidnightTimeInMills(it.date) }
-            .mapValues { getDailyItem(it.key, it.value) }
-            .toList().map { it.second }
+            .groupBy { dateUtils.getDayOfWeek(it.getDateInMills()) }
+            .map { getDailyItem(it.key, it.value.sortedBy { daily -> daily.date }) }
 
-    private fun getDailyItem(date: Long, dailies: List<Daily>) =
+    private fun getDailyItem(dayOfWeek: String, dailies: List<Daily>) =
         DailyItem(
-            date = date,
-            dayOfWeek = dateUtils.getDayOfWeek(date),
+            date = dailies.first().date,
+            dayOfWeek = dayOfWeek,
             weatherDescription = dailies.first().weather.first().description,
-            min = dailies.getByMinTemp()?.temp?.min ?: 0F,
-            max =  dailies.getByMaxTemp()?.temp?.max ?: 0F
+            min = dailies.getByMinTemp()?.temp?.temp ?: 0F,
+            max =  dailies.getByMaxTemp()?.temp?.temp ?: 0F
         )
 
     private fun List<Daily>.getByMaxTemp() =
-            maxBy { it.temp.max }
+            maxBy { it.temp.temp }
 
     private fun List<Daily>.getByMinTemp() =
-            minBy { it.temp.min }
+            minBy { it.temp.temp }
 }

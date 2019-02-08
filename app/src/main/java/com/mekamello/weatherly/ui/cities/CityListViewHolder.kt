@@ -23,11 +23,7 @@ class CityListViewHolder(
         id = city.city.id
         name.text = city.city.name
         weather.text = city.weatherDescription
-        temperature.text = if(city.temp > 0F) {
-            "+${city.temp}"
-        } else {
-            city.temp.toString()
-        }
+        temperature.text = city.getTempString()
         itemView.setOnClickListener { clicks.onNext(id) }
     }
 

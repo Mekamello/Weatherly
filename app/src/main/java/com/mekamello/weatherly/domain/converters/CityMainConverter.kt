@@ -13,7 +13,7 @@ class CityMainConverter
         val daily = if(from.daily.size <= 1){
             from.daily.first()
         } else {
-            from.daily.firstOrNull { dateUtils.isNow(it.date) }
+            from.daily.firstOrNull { dateUtils.isNow(it.getDateInMills()) }
         }
         val weather = daily?.weather?.firstOrNull()
         return CityMain(

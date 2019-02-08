@@ -6,4 +6,13 @@ data class CityMain(
     val weatherId: Int,
     val weatherMain: String,
     val weatherDescription: String
-)
+){
+    fun getTempString(): String {
+        val tempValue = temp.toInt()
+        return if(tempValue > 0) {
+            "+$tempValue"
+        } else {
+            tempValue.toString()
+        }
+    }
+}

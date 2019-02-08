@@ -16,22 +16,19 @@ class DateUtils {
 
     fun isNow(date: Long): Boolean {
         calendar.timeInMillis = getCurrentTimeInMills()
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
         val todayYear = calendar.get(Calendar.YEAR)
         val todayMonth = calendar.get(Calendar.MONTH)
         val todayDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val todayHour = calendar.get(Calendar.HOUR)
+        val todayHour = calendar.get(Calendar.HOUR_OF_DAY)
         calendar.timeInMillis = date
         val dateYear = calendar.get(Calendar.YEAR)
         val dateMonth = calendar.get(Calendar.MONTH)
         val dateDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val dateHour = calendar.get(Calendar.HOUR)
+        val dateHour = calendar.get(Calendar.HOUR_OF_DAY)
         return todayYear == dateYear
                 && todayMonth == dateMonth
                 && todayDay == dateDay
-                && todayHour in dateHour..(dateHour + 2)
+                && todayHour in (dateHour - 3)..dateHour
     }
 
     fun getMidnightTimeInMills(date: Long): Long {
@@ -40,10 +37,10 @@ class DateUtils {
         return calendar.timeInMillis
     }
 
-    fun getDayOfWeek(date: Long) : String{
+    fun getDayOfWeek(date: Long): String {
         calendar.timeInMillis = date
         setToMidnight(calendar)
-        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault())
+        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
     }
 
     private fun setToMidnight(calendar: Calendar) {
