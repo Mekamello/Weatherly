@@ -9,6 +9,19 @@ class DateUtils {
 
     fun getCurrentTimeInMills() = System.currentTimeMillis()
 
+    fun isCurrentlyNight(): Boolean {
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY, 3)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        val startNight = calendar.timeInMillis
+        calendar.set(Calendar.HOUR_OF_DAY, 5)
+        calendar.set(Calendar.MINUTE, 30)
+        val endNight = calendar.timeInMillis
+        val current = getCurrentTimeInMills()
+        return current in startNight until endNight
+    }
+
     fun isPastTenMinutes(date: Long): Boolean {
         val after = getCurrentTimeInMills() - tenMinutesInMills
         return date <= after

@@ -4,6 +4,8 @@ import com.mekamello.weatherly.di.PerActivity
 import com.mekamello.weatherly.domain.repositories.*
 import com.mekamello.weatherly.domain.usecases.UpdateWeatherUseCase
 import com.mekamello.weatherly.domain.usecases.UpdateWeatherUseCaseImpl
+import com.mekamello.weatherly.ui.resources.WeatherIconResourceProvider
+import com.mekamello.weatherly.ui.resources.WeatherIconResourceProviderImpl
 import dagger.Binds
 import dagger.Module
 
@@ -36,4 +38,8 @@ abstract class CityListBinds {
     @Binds
     @PerActivity
     abstract fun provideUpdateWeatherUseCase(impl: UpdateWeatherUseCaseImpl): UpdateWeatherUseCase
+
+    @Binds
+    @PerActivity
+    abstract fun provideWeatherIconProvider(impl: WeatherIconResourceProviderImpl): WeatherIconResourceProvider
 }

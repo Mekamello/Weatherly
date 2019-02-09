@@ -3,6 +3,7 @@ package com.mekamello.weatherly.ui.cities
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.widget.EditText
@@ -19,22 +20,22 @@ import javax.inject.Inject
 
 
 class CityListActivity : AppCompatActivity(), CityListView {
-
     @Inject
     lateinit var presenter: CityListPresenter
-
-    private lateinit var adapter: CityListAdapter
-
+    @Inject
+    lateinit var adapter: CityListAdapter
     private val cityIntent: PublishSubject<String> = PublishSubject.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setTitle(R.string.title_cities_list)
         setupInjection()
-        adapter = CityListAdapter()
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val decorator = DividerItemDecoration(this, layoutManager.orientation)
         city_list.adapter = adapter
         city_list.layoutManager = layoutManager
+        city_list.addItemDecoration(decorator)
         presenter.onCreate(this)
     }
 

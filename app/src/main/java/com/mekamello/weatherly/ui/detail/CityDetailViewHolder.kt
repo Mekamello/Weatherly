@@ -13,10 +13,11 @@ class CityDetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val max: TextView = itemView.findViewById(R.id.daily_item_temp_max)
     val icon: ImageView = itemView.findViewById(R.id.daily_item_icon)
 
-    fun bind(daily: DailyItem) {
+    fun bind(daily: DailyItem, iconResource: Int) {
         min.text = daily.getMinTempString()
         max.text = daily.getMaxTempString()
         weather.text = daily.weatherDescription
         name.text = daily.dayOfWeek
+        icon.setImageResource(iconResource)
     }
 }

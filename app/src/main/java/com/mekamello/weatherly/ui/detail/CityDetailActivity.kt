@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
@@ -14,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import javax.inject.Inject
 
 class CityDetailActivity : AppCompatActivity(), CityDetailView {
-
     companion object {
         private const val EXTRA_CITY_ID: String = "EXTRA_CITY_ID"
         fun start(context: Context, cityId: Int) {
@@ -23,20 +23,20 @@ class CityDetailActivity : AppCompatActivity(), CityDetailView {
             context.startActivity(intent)
         }
     }
-
     @Inject
     lateinit var presenter: CityDetailPresenter
-
-    private lateinit var adapter: CityDetailAdapter
+    @Inject
+    lateinit var adapter: CityDetailAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         setupInjection()
-        adapter = CityDetailAdapter()
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val decorator = DividerItemDecoration(this, layoutManager.orientation)
         city_detail_list.adapter = adapter
         city_detail_list.layoutManager = layoutManager
+        city_detail_list.addItemDecoration(decorator)
         presenter.onCreate(this)
     }
 
@@ -63,6 +63,7 @@ class CityDetailActivity : AppCompatActivity(), CityDetailView {
 
     private fun renderContent(viewState: CityDetailViewState.Content) {
         refresher.isRefreshing = false
+        title = viewState.city.name
         adapter.upload(viewState.dailies)
     }
 

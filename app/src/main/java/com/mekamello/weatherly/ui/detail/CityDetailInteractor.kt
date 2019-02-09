@@ -38,9 +38,11 @@ class CityDetailInteractorImpl
             .groupBy { dateUtils.getDayOfWeek(it.getDateInMills()) }
             .map { getDailyItem(it.key, it.value.sortedBy { daily -> daily.date }) }
 
+    //TODO Need to refactor
     private fun getDailyItem(dayOfWeek: String, dailies: List<Daily>) =
         DailyItem(
             date = dailies.first().date,
+            weatherId = dailies.first().weather.first().id,
             dayOfWeek = dayOfWeek,
             weatherDescription = dailies.first().weather.first().description,
             min = dailies.getByMinTemp()?.temp?.temp ?: 0F,

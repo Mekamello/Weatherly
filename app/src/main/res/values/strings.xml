@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weatherly</string>
+    <string name="title_cities_list">Cities</string>
 </resources>

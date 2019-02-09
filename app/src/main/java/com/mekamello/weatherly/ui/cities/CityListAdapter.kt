@@ -8,9 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.mekamello.weatherly.R
 import com.mekamello.weatherly.domain.models.CityMain
+import com.mekamello.weatherly.ui.resources.WeatherIconResourceProvider
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class CityListAdapter : RecyclerView.Adapter<CityListViewHolder>() {
+class CityListAdapter
+@Inject constructor(
+    private val iconResourceProvider: WeatherIconResourceProvider
+) : RecyclerView.Adapter<CityListViewHolder>() {
     private val callback = object : SortedListAdapterCallback<CityMain>(this) {
         override fun areItemsTheSame(p0: CityMain, p1: CityMain): Boolean = p0.city.id == p1.city.id
         override fun compare(p0: CityMain, p1: CityMain): Int = p0.city.id.compareTo(p1.city.id)
@@ -25,7 +30,9 @@ class CityListAdapter : RecyclerView.Adapter<CityListViewHolder>() {
     override fun getItemCount(): Int = list.size()
 
     override fun onBindViewHolder(holder: CityListViewHolder, position: Int) {
-        holder.bind(list[position])
+        val item = list[position]
+        val icon = iconResourceProvider.getIcon(item.weatherId)
+        holder.bind(item, icon)
     }
 
     override fun onViewRecycled(holder: CityListViewHolder) {
