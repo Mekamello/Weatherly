@@ -85,7 +85,7 @@ class CityListActivity : AppCompatActivity(), CityListView {
     private fun renderShowDialog() {
         val editText = EditText(this)
         val alert = AlertDialog.Builder(this)
-        alert.setTitle("Enter Your Title")
+        alert.setTitle("Add city")
         alert.setView(editText)
         alert.setPositiveButton("Ok") { _, _ -> cityIntent.onNext(editText.text.toString()) }
         alert.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
