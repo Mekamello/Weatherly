@@ -50,10 +50,10 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout android:id="@+id/daily.item.temp.group"
-                  android:layout_width="50dp"
+                  android:layout_width="40dp"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
-                  android:gravity="center_horizontal"
+                  android:gravity="end"
                   android:layout_marginTop="8dp"
                   android:layout_marginEnd="8dp"
                   android:layout_marginRight="8dp"
