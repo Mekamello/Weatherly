@@ -25,7 +25,7 @@ abstract class CityListBinds {
 
     @Binds
     @PerActivity
-    abstract fun provideCityDetailRepository(impl:CityDetailRepositoryImpl): CityDetailRepository
+    abstract fun provideCityDetailRepository(impl:ForecastRepositoryImpl): ForecastRepository
 
     @Binds
     @PerActivity
@@ -33,7 +33,7 @@ abstract class CityListBinds {
 
     @Binds
     @PerActivity
-    abstract fun provideWeatherInfoRepository(impl:WeatherInfoRepositoryImpl): WeatherInfoRepository
+    abstract fun provideWeatherInfoRepository(impl:WeatherRepositoryImpl): WeatherRepository
 
     @Binds
     @PerActivity

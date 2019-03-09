@@ -2,7 +2,7 @@ package com.mekamello.weatherly.domain.api
 
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import retrofit2.http.Query
 
 interface WeatherApi {
     companion object {
@@ -11,8 +11,23 @@ interface WeatherApi {
     }
 
     @GET("forecast")
-    fun getDaily(@QueryMap query: Map<String, String>): Observable<DailyResponse>
+    fun getForecast(
+        @Query("APPID") appId: String = APP_KEY,
+        @Query("units") units: String = "metric",
+        @Query("id") cityId: Int
+    ): Observable<ForecastResponse>
 
     @GET("weather")
-    fun getWeather(@QueryMap query: Map<String, String>): Observable<WeatherResponse>
+    fun getWeather(
+        @Query("APPID") appId: String = APP_KEY,
+        @Query("units") units: String = "metric",
+        @Query("id") cityId: Int
+    ): Observable<WeatherResponse>
+
+    @GET("weather")
+    fun getWeather(
+        @Query("APPID") appId: String = APP_KEY,
+        @Query("units") units: String = "metric",
+        @Query("q") cityName: String
+    ): Observable<WeatherResponse>
 }

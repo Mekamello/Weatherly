@@ -7,14 +7,17 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
-import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
 import com.mekamello.weatherly.R
 import com.mekamello.weatherly.WeatherlyApplication
+import com.mekamello.weatherly.base.MviView
+import com.mekamello.weatherly.base.Store
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_detail.*
 import javax.inject.Inject
 
-class CityDetailActivity : AppCompatActivity(), CityDetailView {
+class CityDetailActivity : AppCompatActivity(), MviView<CityDetailAction, CityDetailViewState> {
     companion object {
         private const val EXTRA_CITY_ID: String = "EXTRA_CITY_ID"
         fun start(context: Context, cityId: Int) {
@@ -23,10 +26,16 @@ class CityDetailActivity : AppCompatActivity(), CityDetailView {
             context.startActivity(intent)
         }
     }
+
+    private val userActions: PublishSubject<CityDetailAction> = PublishSubject.create()
+    override val actions: Observable<CityDetailAction> = userActions
     @Inject
-    lateinit var presenter: CityDetailPresenter
+    lateinit var store: Store<CityDetailAction, CityDetailViewState>
     @Inject
     lateinit var adapter: CityDetailAdapter
+
+    private lateinit var viewBindings: Disposable
+    private lateinit var wireBindings: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +46,15 @@ class CityDetailActivity : AppCompatActivity(), CityDetailView {
         city_detail_list.adapter = adapter
         city_detail_list.layoutManager = layoutManager
         city_detail_list.addItemDecoration(decorator)
-        presenter.onCreate(this)
+        refresher.setOnRefreshListener { userActions.onNext(CityDetailAction.Refresh) }
+        wireBindings = store.wire()
+        viewBindings = store.bind(this)
+        userActions.onNext(CityDetailAction.Refresh)
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        wireBindings.dispose()
+        viewBindings.dispose()
         super.onDestroy()
     }
 
@@ -51,28 +64,16 @@ class CityDetailActivity : AppCompatActivity(), CityDetailView {
             .inject(this)
     }
 
-    override fun refreshIntent(): Observable<Unit> =
-        RxSwipeRefreshLayout.refreshes(refresher)
-            .map { Unit }
-
-    override fun render(viewState: CityDetailViewState) = when (viewState) {
-        is CityDetailViewState.Content -> renderContent(viewState)
-        is CityDetailViewState.Error -> renderError(viewState)
-        is CityDetailViewState.Loading -> renderLoading()
+    override fun render(state: CityDetailViewState) {
+        refresher.isRefreshing = state.loading
+        state.city?.let { title = it.name }
+        state.throwable?.let { renderError(it) }
+        adapter.upload(state.dailies)
     }
 
-    private fun renderContent(viewState: CityDetailViewState.Content) {
+    private fun renderError(throwable: Throwable) {
         refresher.isRefreshing = false
-        title = viewState.city.name
-        adapter.upload(viewState.dailies)
+        Toast.makeText(this, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
-    private fun renderError(viewState: CityDetailViewState.Error) {
-        refresher.isRefreshing = false
-        Toast.makeText(this, viewState.throwable.localizedMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun renderLoading() {
-        refresher.isRefreshing = true
-    }
 }

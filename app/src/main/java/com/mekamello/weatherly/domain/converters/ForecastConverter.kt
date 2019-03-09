@@ -1,34 +1,33 @@
 package com.mekamello.weatherly.domain.converters
 
-import com.mekamello.weatherly.domain.database.entities.CityWeatherRelation
+import com.mekamello.weatherly.domain.database.relations.CityWeatherRelation
 import com.mekamello.weatherly.domain.database.entities.TemperatureE
 import com.mekamello.weatherly.domain.database.entities.WeatherE
-import com.mekamello.weatherly.domain.database.entities.WeatherInfoE
 import com.mekamello.weatherly.domain.models.*
 import javax.inject.Inject
 
-class CityDetailConverter
+class ForecastConverter
 @Inject constructor(
     private val cityConverter: CityConverter
 ) {
-    fun convert(from: CityDetail) =
-           from.daily.map { convertDaily(it, from.city) }
+    fun convert(from: Forecast) =
+           from.weathers.map { convertDaily(it, from.city) }
 
     fun convert(from: CityWeatherRelation) =
-        CityDetail(
+        Forecast(
             city = cityConverter.convert(from.city),
-            daily = from.weathers.map { convertWeatherInfoEntity(it) }
+            weathers = from.weathers.map { convertWeatherInfoEntity(it) }
         )
 
-    private fun convertWeatherInfoEntity(from: WeatherInfoE) =
-        Daily(
+    private fun convertWeatherInfoEntity(from: WeatherE) =
+        Weather(
             date = from.date,
-            weather = listOf(convertWeatherEntity(from.weather)),
+            atmosphere = listOf(convertWeatherEntity(from.atmosphere)),
             temp = convertTemperatureEntity(from.temperature)
         )
 
     private fun convertWeatherEntity(from: WeatherE) =
-        Weather(
+        Atmosphere(
             id = from.id,
             main = from.main,
             description = from.description
@@ -41,16 +40,16 @@ class CityDetailConverter
             max = from.max
         )
 
-    private fun convertDaily(from: Daily, relation: City) =
-        WeatherInfoE(
+    private fun convertDaily(from: Weather, relation: City) =
+        WeatherE(
             id = 0,
             cid = relation.id,
             date = from.date,
-            weather = convertWeather(from.weather.first()),
+            atmosphere = convertWeather(from.atmosphere.first()),
             temperature = convertTemperature(from.temp)
         )
 
-    private fun convertWeather(from: Weather) =
+    private fun convertWeather(from: Atmosphere) =
         WeatherE(
             id = from.id,
             main = from.main,

@@ -1,9 +1,10 @@
 package com.mekamello.weatherly.domain.models
 
 data class Weather(
-    val id: Int,
-    val main: String,
-    val description: String
+        val date: Long,
+        val atmosphere: List<Atmosphere>,
+        val temp: Temperature
 ) {
-
+        //TODO Move calculating in converter
+        fun getDateInMills() = date * 1000
 }

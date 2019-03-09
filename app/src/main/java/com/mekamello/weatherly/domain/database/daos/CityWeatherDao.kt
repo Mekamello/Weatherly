@@ -2,7 +2,7 @@ package com.mekamello.weatherly.domain.database.daos
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import com.mekamello.weatherly.domain.database.entities.CityWeatherRelation
+import com.mekamello.weatherly.domain.database.relations.CityWeatherRelation
 import io.reactivex.Single
 
 @Dao

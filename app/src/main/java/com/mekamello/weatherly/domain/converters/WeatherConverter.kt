@@ -4,20 +4,20 @@ import com.mekamello.weatherly.domain.api.WeatherResponse
 import com.mekamello.weatherly.domain.models.*
 
 class WeatherConverter {
-    fun convert(from: WeatherResponse): CityDetail =
-        CityDetail(
+    fun convert(from: WeatherResponse): Forecast =
+        Forecast(
             city = City(
                 id = from.id,
                 name = from.name
             ),
-            daily = listOf(convertDaily(from))
+            weathers = listOf(convertDaily(from))
 
         )
 
     private fun convertDaily(from: WeatherResponse)=
-            Daily(
+            Weather(
                 date = from.date,
-                weather = from.weather.map { convertWeather(it) },
+                atmosphere = from.weather.map { convertWeather(it) },
                 temp = Temperature(
                     temp = from.main.temp,
                     min = from.main.min,
@@ -26,7 +26,7 @@ class WeatherConverter {
             )
 
     fun convertWeather(from: WeatherResponse.Weather) =
-        Weather(
+        Atmosphere(
             id = from.id,
             main = from.main,
             description = from.description

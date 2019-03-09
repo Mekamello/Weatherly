@@ -1,6 +1,8 @@
 package com.mekamello.weatherly.di
 
 import android.content.Context
+import com.mekamello.weatherly.base.RxSchedulers
+import com.mekamello.weatherly.base.RxSchedulersImpl
 import com.mekamello.weatherly.domain.converters.*
 import com.mekamello.weatherly.utils.DateUtils
 import dagger.Module
@@ -36,7 +38,7 @@ class AppModule(
 
     @Provides
     @Singleton
-    fun provideCityDetailConverter(cityConverter: CityConverter) = CityDetailConverter(cityConverter)
+    fun provideCityDetailConverter(cityConverter: CityConverter) = ForecastConverter(cityConverter)
 
     @Provides
     @Singleton
@@ -45,5 +47,9 @@ class AppModule(
     @Provides
     @Singleton
     fun provideDateUtils() = DateUtils()
+
+    @Provides
+    @Singleton
+    fun provideRxSchedulers(): RxSchedulers = RxSchedulersImpl()
 
 }

@@ -2,7 +2,7 @@ package com.mekamello.weatherly.domain.api
 
 import com.google.gson.annotations.SerializedName
 
-class DailyResponse(
+class ForecastResponse(
     @SerializedName("city")
     val city: City,
     @SerializedName("list")

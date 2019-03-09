@@ -6,7 +6,7 @@ import com.mekamello.weatherly.domain.database.AppDatabase
 import com.mekamello.weatherly.domain.database.daos.CityDao
 import com.mekamello.weatherly.domain.database.daos.CityUpdateDateDao
 import com.mekamello.weatherly.domain.database.daos.CityWeatherDao
-import com.mekamello.weatherly.domain.database.daos.WeatherInfoDao
+import com.mekamello.weatherly.domain.database.daos.WeatherDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -28,7 +28,7 @@ class DatabaseModule {
     //region Repository
     @Provides
     @Singleton
-    fun provideWeatherInfoDao(database: AppDatabase): WeatherInfoDao =
+    fun provideWeatherInfoDao(database: AppDatabase): WeatherDao =
             database.weatherInfoDao()
 
     @Provides

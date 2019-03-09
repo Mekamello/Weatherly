@@ -1,6 +1,6 @@
 package com.mekamello.weatherly.domain.models
 
-data class CityDetail(
+data class Forecast(
     val city: City,
-    val daily: List<Daily>
+    val weathers: List<Weather>
 )

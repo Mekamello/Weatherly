@@ -1,6 +1,6 @@
 package com.mekamello.weatherly.domain.models
 
-data class CityMain(
+data class CityShortWeather(
     val city: City,
     val temp: Float,
     val weatherId: Int,

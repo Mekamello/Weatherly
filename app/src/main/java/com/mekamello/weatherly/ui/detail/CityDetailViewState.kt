@@ -1,9 +1,12 @@
 package com.mekamello.weatherly.ui.detail
 
 import com.mekamello.weatherly.domain.models.City
+import com.mekamello.weatherly.ui.detail.DailyItem
 
-sealed class CityDetailViewState {
-    object Loading : CityDetailViewState()
-    data class Content(val city: City, val dailies: List<DailyItem>) : CityDetailViewState()
-    data class Error(val throwable: Throwable) : CityDetailViewState()
-}
+data class CityDetailViewState(
+    val cityId: Int,
+    val loading: Boolean = false,
+    val city: City? = null,
+    val dailies: List<DailyItem> = listOf(),
+    val throwable: Throwable? = null
+)

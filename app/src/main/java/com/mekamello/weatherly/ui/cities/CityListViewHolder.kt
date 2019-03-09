@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.mekamello.weatherly.R
-import com.mekamello.weatherly.domain.models.CityMain
+import com.mekamello.weatherly.domain.models.CityShortWeather
 import io.reactivex.subjects.PublishSubject
 
 class CityListViewHolder(
@@ -22,12 +22,14 @@ class CityListViewHolder(
     private val icon = itemView.findViewById<AppCompatImageView>(R.id.city_item_icon)
     private var id = NO_ID
 
-    fun bind(city: CityMain, iconResource: Int) {
+    fun bind(city: CityShortWeather, iconResource: Int) {
         id = city.city.id
         name.text = city.city.name
         weather.text = city.weatherDescription
         temperature.text = city.getTempString()
-        icon.setImageResource(iconResource)
+        if(iconResource != -1) {
+            icon.setImageResource(iconResource)
+        }
         itemView.setOnClickListener { clicks.onNext(id) }
     }
 

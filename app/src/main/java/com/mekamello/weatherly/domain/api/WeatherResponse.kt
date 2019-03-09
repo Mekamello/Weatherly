@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName
 
 class WeatherResponse(
     @SerializedName("id")
-    val id: Int,
+    val id: Int = -1,
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("weather")
     val weather: List<Weather>,
     @SerializedName("main")
-    val main: Main,
+    val main: Temperature,
     @SerializedName("dt")
     val date: Long
 ) {
-    class Main(
+    class Temperature(
         @SerializedName("temp")
         val temp: Float,
         @SerializedName("temp_min")

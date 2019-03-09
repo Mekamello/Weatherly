@@ -4,9 +4,9 @@ import com.mekamello.weatherly.domain.api.WeatherApi
 import com.mekamello.weatherly.domain.converters.CityMainConverter
 import com.mekamello.weatherly.domain.converters.WeatherConverter
 import com.mekamello.weatherly.domain.models.City
-import com.mekamello.weatherly.domain.models.CityDetail
-import com.mekamello.weatherly.domain.models.CityMain
-import com.mekamello.weatherly.domain.repositories.CityDetailRepository
+import com.mekamello.weatherly.domain.models.Forecast
+import com.mekamello.weatherly.domain.models.CityShortWeather
+import com.mekamello.weatherly.domain.repositories.ForecastRepository
 import com.mekamello.weatherly.domain.repositories.CityRepository
 import com.mekamello.weatherly.domain.usecases.UpdateWeatherUseCase
 import io.reactivex.Observable
@@ -23,7 +23,7 @@ class CityListInteractorImpl
     private val weatherApi: WeatherApi,
     private val updateWeatherUseCase: UpdateWeatherUseCase,
     private val cityRepository: CityRepository,
-    private val cityDetailRepository: CityDetailRepository,
+    private val forecastRepository: ForecastRepository,
     private val weatherConverter: WeatherConverter,
     private val cityMainConverter: CityMainConverter
 ) : CityListInteractor {
@@ -60,13 +60,13 @@ class CityListInteractorImpl
             .cast(CityListViewState::class.java)
             .onErrorReturn { CityListViewState.Error(it.message ?: "", it) }
 
-    private fun Observable<CityDetail>.addAndGetAll(): Observable<List<CityMain>> =
+    private fun Observable<Forecast>.addAndGetAll(): Observable<List<CityShortWeather>> =
         flatMapCompletable { addWeather(it) }
             .andThen(getStoredCityLightList())
 
-    private fun addWeather(cityDetail: CityDetail) =
-        cityRepository.add(cityDetail.city)
-            .andThen(cityDetailRepository.add(cityDetail))
+    private fun addWeather(forecast: Forecast) =
+        cityRepository.add(forecast.city)
+            .andThen(forecastRepository.add(forecast))
 
     private fun Single<List<City>>.updateWeatherByEachCity() =
         flatMapObservable { Observable.fromIterable(it) }
@@ -74,7 +74,7 @@ class CityListInteractorImpl
             .andThen(getStoredCityLightList())
 
     private fun getStoredCityLightList() =
-        cityDetailRepository.getAll()
+        forecastRepository.getAll()
             .map { list -> list.map { cityMainConverter.convert(it) } }
             .toObservable()
 

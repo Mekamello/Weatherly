@@ -11,12 +11,12 @@ import android.arch.persistence.room.*
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class WeatherInfoE(
+data class WeatherE(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "city_id") val cid: Int,
     @ColumnInfo(name = "date") val date: Long,
     @Embedded(prefix = "t") val temperature: TemperatureE,
-    @Embedded(prefix = "w") val weather: WeatherE
+    @Embedded(prefix = "w") val atmosphere: AtmosphereE
 )
 
 data class TemperatureE(
@@ -25,7 +25,7 @@ data class TemperatureE(
     @ColumnInfo(name = "max") val max: Float
 )
 
-data class WeatherE(
+data class AtmosphereE(
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "main") val main: String,
     @ColumnInfo(name = "description") val description: String

@@ -6,7 +6,7 @@
                                              android:layout_height="wrap_content">
 
     <TextView
-            android:id="@+id/daily.item.name"
+            android:id="@+id/forecast.item.name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -22,7 +22,7 @@
             tools:text="Monday"/>
 
     <TextView
-            android:id="@+id/daily.item.weather"
+            android:id="@+id/forecast.item.weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -38,7 +38,7 @@
             tools:text="Clear sky"/>
 
     <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/daily.item.icon"
+            android:id="@+id/forecast.item.icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="8dp"
@@ -46,10 +46,10 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/daily.item.temp.group"
+            app:layout_constraintEnd_toStartOf="@id/forecast.item.temp.group"
             app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout android:id="@+id/daily.item.temp.group"
+    <LinearLayout android:id="@+id/forecast.item.temp.group"
                   android:layout_width="40dp"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
@@ -62,7 +62,7 @@
                   app:layout_constraintTop_toTopOf="parent"
                   app:layout_constraintBottom_toBottomOf="parent">
         <TextView
-                android:id="@+id/daily.item.temp.max"
+                android:id="@+id/forecast.item.temp.max"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -73,7 +73,7 @@
                 tools:text="+4"/>
 
         <TextView
-                android:id="@+id/daily.item.temp.min"
+                android:id="@+id/forecast.item.temp.min"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
